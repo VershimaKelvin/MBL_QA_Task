@@ -13,7 +13,7 @@ class MyCustomToast{
       description: TextBody(message,color: Color(0xff013220),),
       dismissable: true,
       position: MotionToastPosition.top,
-      opacity: .8,
+      // opacity: .5,
     );
     toast.show(context);
   }

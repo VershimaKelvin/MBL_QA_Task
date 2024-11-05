@@ -214,18 +214,10 @@ class CustomFormValidation {
     String password, [
     String? type,
   ]) {
-    // final hasUpperCase = RegExp('(?:[A-Z])');
-    // final hasLowerCase = RegExp('(?:[a-z])');
-    // final hasSymbols = RegExp(r"[!@#$%^&*(),|+=;.?':{}<>]");
-    // final hasANumber = RegExp('(?=.*?[0-9])');
-    // var text = text ? '' : message;
-    // return text;
     if (text == null) {
       return '';
     } else if (text.isEmpty) {
       return message;
-    } else if (text.length <= 7) {
-      return 'Confirmation password must match password';
     } else if (text != password) {
       return 'Confirmation password must match password';
     } else {

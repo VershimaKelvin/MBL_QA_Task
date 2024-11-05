@@ -34,56 +34,35 @@ class _SignupState extends State<Signup> {
   bool isChecked = false;
   var canSubmit = false;
 
-  late StreamController<String> _lastNameStreamController;
-  late StreamController<String> _emailStreamController;
-  late StreamController<String> _firstNameStreamController;
+
+  late StreamController<String> _usernameStreamController;
   late StreamController<String> _passwordStreamController;
   late StreamController<String> _repeatPasswordStreamController;
 
-  final lastNameFocus = FocusNode();
-  final emailFocus = FocusNode();
-  final firstNameFocus = FocusNode();
+
+  final usernameFocus = FocusNode();
   final passwordFocus = FocusNode();
   final repeatPasswordFocus = FocusNode();
 
-  final lastNameController = TextEditingController();
-  final firstNameController = TextEditingController();
-  final emailController = TextEditingController();
+  final usernameController = TextEditingController();
   final passwordController = TextEditingController();
   final repeatPasswordController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    runBackgroundData();
-    _lastNameStreamController = StreamController<String>.broadcast();
-    _firstNameStreamController = StreamController<String>.broadcast();
-    _emailStreamController = StreamController<String>.broadcast();
+    _usernameStreamController = StreamController<String>.broadcast();
     _passwordStreamController = StreamController<String>.broadcast();
     _repeatPasswordStreamController = StreamController<String>.broadcast();
 
 
-    firstNameController.addListener(() {
-      _firstNameStreamController.sink.add(
-        firstNameController.text.trim(),
+    usernameController.addListener(() {
+      _usernameStreamController.sink.add(
+        usernameController.text.trim(),
       );
       validateInputs();
     });
 
-
-    lastNameController.addListener(() {
-      _lastNameStreamController.sink.add(
-        lastNameController.text.trim(),
-      );
-      validateInputs();
-    });
-
-    emailController.addListener(() {
-      _emailStreamController.sink.add(
-        emailController.text.trim(),
-      );
-      validateInputs();
-    });
 
     passwordController.addListener(() {
       _passwordStreamController.sink.add(
@@ -99,42 +78,28 @@ class _SignupState extends State<Signup> {
       validateInputs();
     });
 
-    // firstNameFocus.addListener();
   }
 
   @override
   void dispose() {
     super.dispose();
-    _lastNameStreamController.close();
-    _emailStreamController.close();
     _passwordStreamController.close();
     _repeatPasswordStreamController.close();
-    _firstNameStreamController.close();
-
-    lastNameFocus.dispose();
-    firstNameFocus.dispose();
-    emailFocus.dispose();
+    _usernameStreamController.close();
+    usernameFocus.dispose();
     passwordFocus.dispose();
     repeatPasswordFocus.dispose();
   }
 
   void validateInputs() {
-    final lastNameError = CustomFormValidation.errorEmailMessage(
-      lastNameController.text.trim(),
-      'last Name is required',
-    );
 
-    final firstNameError = CustomFormValidation.errorEmailMessage(
-      firstNameController.text.trim(),
+    final firstNameError = CustomFormValidation.errorUsernameMessage(
+      usernameController.text.trim(),
       'first Name is required',
     );
 
-    final emailError = CustomFormValidation.errorEmailMessage(
-      emailController.text.trim(),
-      'Email is required',
-    );
 
-    final passwordError = CustomFormValidation.errorMessagePassword2(
+    final passwordError = CustomFormValidation.errorUsernameMessage(
       passwordController.text.trim(),
       'Password is required',
     );
@@ -146,14 +111,10 @@ class _SignupState extends State<Signup> {
       passwordController.text,
     );
 
-    // Check if the checkbox is checked and there are no validation errors
     setState(() {
-      canSubmit = isChecked &&
-          emailError.isEmpty &&
-          lastNameError.isEmpty &&
+      canSubmit =
           firstNameError.isEmpty &&
           passwordError.isEmpty &&
-          // di<AuthNotifier>().selectedEstateID != null &&
           confirmPasswordError.isEmpty;
     });
   }
@@ -179,113 +140,48 @@ class _SignupState extends State<Signup> {
                     children: [
                       Gap(50.h),
                       TextSemiBold(
-                        'Create your new account',
+                        'Create An account',
                         fontSize: 32.sp,
                       ),
                       Gap(8.h),
                       TextBody(
-                        'Create an account to start shopping within your estate',
+                        'Create an account to see items',
                         fontSize: 14.sp,
                         color: AppColors.textSmallColor,
                       ),
                       Gap(33.h),
                       TextBody(
-                        'First Name',
+                        'Username',
                         fontSize: 14.sp,
                         color: AppColors.textColor,
                       ),
                       StreamBuilder<String>(
-                        stream: _firstNameStreamController.stream,
+                        stream: _usernameStreamController.stream,
                         builder: (context, snapshot) {
                           return InputField(
-                            fieldFocusNode: firstNameFocus,
-                            label: 'first name',
+                            fieldFocusNode: usernameFocus,
+                            label: 'username',
                             validationColor: snapshot.data == null
                                 ? AppColors.white
                                 : CustomFormValidation.getColor(
                               snapshot.data,
-                              firstNameFocus,
+                              usernameFocus,
                               CustomFormValidation.errorMessage(
                                 snapshot.data,
-                                'first name is required',
+                                'Username is required',
                               ),
                             ),
-                            controller: firstNameController,
-                            placeholder: 'first name',
+                            controller: usernameController,
+                            placeholder: 'Enter Username',
                             validationMessage:
                             CustomFormValidation.errorMessage(
                               snapshot.data,
-                              'first name is required',
+                              'username is required',
                             ),
                           );
                         },
                       ),
                       Gap(8.h),
-                      TextBody(
-                        'Last Name',
-                        fontSize: 14.sp,
-                        color: AppColors.textColor,
-                      ),
-                      StreamBuilder<String>(
-                        stream: _lastNameStreamController.stream,
-                        builder: (context, snapshot) {
-                          return InputField(
-                            fieldFocusNode: lastNameFocus,
-                            label: 'last name',
-                            validationColor: snapshot.data == null
-                                ? AppColors.white
-                                : CustomFormValidation.getColor(
-                              snapshot.data,
-                              lastNameFocus,
-                              CustomFormValidation.errorMessage(
-                                snapshot.data,
-                                'last name is required',
-                              ),
-                            ),
-                            controller: lastNameController,
-                            placeholder: 'last name',
-                            validationMessage:
-                            CustomFormValidation.errorMessage(
-                              snapshot.data,
-                              'last name is required',
-                            ),
-                          );
-                        },
-                      ),
-                      Gap(8.h),
-                      TextBody(
-                        'Email Address',
-                        fontSize: 14.sp,
-                        color: AppColors.textColor,
-                      ),
-                      StreamBuilder<String>(
-                        stream: _emailStreamController.stream,
-                        builder: (context, snapshot) {
-                          return InputField(
-                            fieldFocusNode: emailFocus,
-                            label: 'Email',
-                            validationColor: snapshot.data == null
-                                ? AppColors.white
-                                : CustomFormValidation.getColor(
-                              snapshot.data,
-                              emailFocus,
-                              CustomFormValidation.errorEmailMessage(
-                                snapshot.data,
-                                'Email is required',
-                              ),
-                            ),
-                            controller: emailController,
-                            placeholder: 'Enter Email Address',
-                            validationMessage:
-                            CustomFormValidation.errorEmailMessage(
-                              snapshot.data,
-                              'Email is required',
-                            ),
-                          );
-                        },
-                      ),
-                      Gap(8.h),
-                      Gap(10.h),
                       TextBody(
                         'Password',
                         fontSize: 14.sp,
@@ -306,13 +202,13 @@ class _SignupState extends State<Signup> {
                               snapshot.data,
                               passwordFocus,
                               CustomFormValidation
-                                  .errorMessagePassword(
+                                  .errorUsernameMessage(
                                 snapshot.data,
                                 'Password is required',
                               ),
                             ),
                             validationMessage:
-                            CustomFormValidation.errorMessagePassword(
+                            CustomFormValidation.errorUsernameMessage(
                               snapshot.data,
                               'Password is required',
                             ),
@@ -340,7 +236,7 @@ class _SignupState extends State<Signup> {
                               snapshot.data,
                               repeatPasswordFocus,
                               CustomFormValidation
-                                  .errorMessageConfirmPassword(
+                                  .errorUsernameMessage(
                                 snapshot.data,
                                 're-enter password',
                                 passwordController.text,
@@ -350,7 +246,7 @@ class _SignupState extends State<Signup> {
                             placeholder: 'Re-enter password',
                             password: true,
                             validationMessage: CustomFormValidation
-                                .errorMessageConfirmPassword(
+                                .errorUsernameMessage(
                               snapshot.data,
                               'Re-enter password',
                               passwordController.text,
@@ -359,72 +255,6 @@ class _SignupState extends State<Signup> {
                           );
                         },
                       ),
-                      Gap(10.h),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          SizedBox(
-                            width: 24.w,
-                            height: 24.h,
-                            child: Transform.scale(
-                              scale: 0.7,
-                              child: Checkbox(
-                                value: isChecked,
-                                side: const BorderSide(
-                                    color: AppColors.primaryColor),
-                                onChanged: (bool? value) {
-                                  setState(() {
-                                    isChecked = value!;
-                                    validateInputs();
-                                  });
-                                },
-                                activeColor: AppColors
-                                    .primaryColor, // Make the actual checkbox transparent
-                                // Set the check color to orange
-                              ),
-                            ),
-                          ),
-                          Gap(10.w),
-                          Flexible(
-                            child: RichText(
-                              text: TextSpan(
-                                text: 'I Agree with ',
-                                style: TextStyle(
-                                  fontSize: 14.sp,
-                                  fontWeight: FontWeight.w500,
-                                  color: AppColors.textColor,
-                                ),
-                                children: <TextSpan>[
-                                  TextSpan(
-                                    text: 'Terms of Service ',
-                                    style: TextStyle(
-                                      fontSize: 14.sp,
-                                      fontWeight: FontWeight.w500,
-                                      color: AppColors.primaryColor,
-                                    ),
-                                  ),
-                                  TextSpan(
-                                    text: 'and',
-                                    style: TextStyle(
-                                      fontSize: 14.sp,
-                                      fontWeight: FontWeight.w500,
-                                      color: AppColors.textColor,
-                                    ),
-                                  ),
-                                  TextSpan(
-                                    text: ' Privacy Policy ',
-                                    style: TextStyle(
-                                      fontSize: 14.sp,
-                                      fontWeight: FontWeight.w500,
-                                      color: AppColors.primaryColor,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
                       Gap(33.h),
                       BusyButton(
                         title: 'Register',
@@ -432,7 +262,7 @@ class _SignupState extends State<Signup> {
                           di<AuthNotifier>().register(
                               context,
                               password: repeatPasswordController.text.trim(),
-                              username: ''
+                              username: usernameController.text.trim(),
                           );
                         },
                         disabled: !canSubmit,

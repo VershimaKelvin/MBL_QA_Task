@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:injectable/injectable.dart';
+import 'package:logger/logger.dart';
 import 'package:mbl/app/view/widgets/app_loading_pop_up.dart';
 import 'package:mbl/core/di/di_container.dart';
 import 'package:mbl/core/errors/failure.dart';
@@ -13,6 +14,8 @@ import 'package:mbl/core/utils/custom_toast.dart';
 import 'package:mbl/feature/auth/domain/entites/user_entity.dart';
 import 'package:mbl/feature/auth/domain/usecase/login_usecase.dart';
 import 'package:mbl/feature/auth/domain/usecase/register_usecase.dart';
+import 'package:mbl/feature/auth/presentation/pages/login.dart';
+import 'package:mbl/feature/items/presentation/changeNotifier/item_notifier.dart';
 
 @lazySingleton
 class AuthNotifier extends ChangeNotifier {
@@ -58,11 +61,16 @@ class AuthNotifier extends ChangeNotifier {
       },
       (r) async {
         user = r;
+        Logger().d(user);
+        await di<ItemNotifier>().getAllItems(context);
         await Navigator.pushNamedAndRemoveUntil(
-            context, RouteName.dashboard, (route) => false);
+            context, RouteName.itemView, (route) => false);
+
       },
     );
   }
+
+
 
   Future<void> register(
     BuildContext context, {
@@ -78,9 +86,9 @@ class AuthNotifier extends ChangeNotifier {
         password: password,
       ),
     );
+    navigator.pop();
     await response.fold(
       (l) {
-        navigator.pop();
         if (l == NoInternetFailure()) {
           MyCustomToast.displayErrorMotionToast(context, 'No internet Connection');
         }
@@ -93,16 +101,13 @@ class AuthNotifier extends ChangeNotifier {
       },
       (r) async {
         if(r){
-          // unawaited(Navigator.pushAndRemoveUntil(
-          //     context,
-          //     MaterialPageRoute(
-          //       builder: (context) => EmailVerify(
-          //         userRegistrationEmail: UserRegistrationEmail(
-          //           email: email,
-          //         ),
-          //       ),
-          //     ),
-          //         (route) => false));
+          MyCustomToast.displaySuccessMotionToast(context, 'Account Created');
+          unawaited(Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(
+                builder: (context) => Login(),
+              ),
+                  (route) => false));
         }else{
           MyCustomToast.displayErrorMotionToast(context, 'please try again later');
         }

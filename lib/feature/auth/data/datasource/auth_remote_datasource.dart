@@ -22,6 +22,7 @@ abstract class AuthRemoteDatasource {
     required String username,
     required String password,
   });
+
 }
 
 
@@ -59,8 +60,12 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDatasource {
         Logger().d(response);
         final responseData = response.data as Map<String, dynamic>;
         if (responseData['accessToken'] != null) {
-          await localDataStorage.saveToken(responseData['access'].toString());
+          Logger().d('saving token');
+          await localDataStorage.saveToken(responseData['accessToken'].toString());
+          final token = await localDataStorage.getToken();
+          Logger().d(token);
         }
+
         final _user = UserModel.fromJson(responseData);
         await localDataStorage.saveUser(_user);
         return _user;

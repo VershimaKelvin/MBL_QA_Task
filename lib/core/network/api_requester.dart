@@ -44,16 +44,23 @@ class ApiRequester {
     return _performRequest(requestOptions, token: token);
   }
 
-  Future<Response> get({required String endpoint, required dynamic body, String? token}) async {
+  Future<Response> get({
+    required String endpoint,
+    Map<String, dynamic>? queryParameters, // New parameter for query params
+    String? token,
+  }) async {
     final requestOptions = RequestOptions(
       path: BASE_URL + endpoint,
       headers: token != null ? {'Authorization': 'Bearer $token'} : null,
-      data: body,
+      queryParameters: queryParameters, // Pass query parameters here
       method: 'GET',
     );
-    Logger().d('here are the request headers ${requestOptions.headers}');
+
+    Logger().d('GET request headers: ${requestOptions.headers}');
+    Logger().d('GET request query parameters: $queryParameters');
     return _performRequest(requestOptions, token: token);
   }
+
 
   Future<Response> patch({required String endpoint, required dynamic body, String? token}) async {
     final requestOptions = RequestOptions(

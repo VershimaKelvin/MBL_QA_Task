@@ -6,6 +6,7 @@ import 'package:mbl/core/di/di_container.dart';
 import 'package:mbl/core/navigation/route_name.dart';
 import 'package:mbl/core/navigation/router.dart';
 import 'package:mbl/feature/auth/presentation/changeNotifier/authNotifier.dart';
+import 'package:mbl/feature/items/presentation/changeNotifier/item_notifier.dart';
 import 'package:provider/provider.dart';
 
 
@@ -18,6 +19,7 @@ class App extends StatelessWidget {
 
       providers: [
         ChangeNotifierProvider<AuthNotifier>(create: (_) => di<AuthNotifier>()),
+        ChangeNotifierProvider<ItemNotifier>(create: (_) => di<ItemNotifier>()),
       ],
       child: ScreenUtilInit(
         useInheritedMediaQuery: true,
