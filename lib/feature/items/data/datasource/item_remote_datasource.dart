@@ -14,11 +14,17 @@ import 'package:mbl/feature/items/data/model/item_model.dart';
 
 abstract class ItemRemoteDatasource {
   Future<List<ItemModel>> getAllItems();
+  
+  Future<ItemModel> getSingleItem({required String id});
+
+  Future<bool> deleteItem({required String id});
 
   Future<bool> createItem({
     required String name,
     required String description,
 });
+  
+  
 }
 
 
@@ -93,6 +99,67 @@ class ItemRemoteDataSourceImpl implements ItemRemoteDatasource {
       return false;
     } else {
       throw NoInternetException();
+    }
+  }
+
+  @override
+  Future<ItemModel> getSingleItem({required String id})
+  async{
+    if (await networkInfo.isConnected) {
+      final body = {
+      };
+      try {
+        final token = await localDataStorage.getToken();
+        Logger().d(token);
+        final response = await apiRequester.get(
+          endpoint: 'items/$id',
+          token: token,
+        );
+        Logger().d('Fetch Single items response: ${response.data}');
+
+        // Handle the response
+        final responseData = response.data as Map<String, dynamic>;
+
+        // Convert response data to CartModel
+        final singleItem = ItemModel.fromJson(responseData);
+
+        return singleItem;
+      } on DioError catch (e) {
+        if (e.response?.statusCode == 404) {
+          throw Exception('Items not found');
+        } else {
+          Logger().e(e.toString());
+          throw Exception('Failed to fetch items');
+        }
+      }
+    } else {
+      throw NoInternetException();
+    }
+  }
+
+  @override
+  Future<bool> deleteItem({required String id})
+  async {
+    if (!await networkInfo.isConnected) {
+      throw NoInternetException();
+    }
+
+    try {
+      final token = await localDataStorage.getToken();
+      final response = await apiRequester.delete(
+        endpoint: 'items/$id',
+        token: token, body: null,
+      );
+
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        // Handle other status codes or unexpected cases here if needed
+        return false;
+      }
+    } catch (e) {
+      // Log or handle the error
+      rethrow;
     }
   }
 

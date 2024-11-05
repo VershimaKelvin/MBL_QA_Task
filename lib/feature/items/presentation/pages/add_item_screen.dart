@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
+import 'package:mbl/app/app.dart';
 import 'package:mbl/app/view/styles/app_colors.dart';
 import 'package:mbl/app/view/styles/fonts.dart';
 import 'package:mbl/app/view/widgets/text_box.dart';
@@ -92,6 +93,7 @@ class _AddItemScreenState extends State<AddItemScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        appBar: AppBar(backgroundColor: AppColors.white,),
         body: Padding(
             padding: EdgeInsets.symmetric(horizontal: 15.w,vertical: 20.h),
           child: Column(

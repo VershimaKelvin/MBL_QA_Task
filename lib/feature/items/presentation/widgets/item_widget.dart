@@ -4,7 +4,9 @@ import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
 import 'package:mbl/app/view/styles/app_colors.dart';
 import 'package:mbl/app/view/styles/fonts.dart';
+import 'package:mbl/core/di/di_container.dart';
 import 'package:mbl/feature/items/domain/entities/item_entity.dart';
+import 'package:mbl/feature/items/presentation/changeNotifier/item_notifier.dart';
 
 class ItemWidget extends StatefulWidget {
   const ItemWidget({
@@ -26,7 +28,7 @@ class _ItemWidgetState extends State<ItemWidget> {
       padding: EdgeInsets.symmetric(horizontal: 0.w),
       child: InkWell(
         onTap: (){
-
+          di<ItemNotifier>().getSingleItem(context, id: widget.anItem.id!, item: widget.anItem);
         },
         child: Container(
           decoration: BoxDecoration(
