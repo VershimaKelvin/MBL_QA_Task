@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
+import 'package:logger/logger.dart';
 import 'package:mbl/app/view/styles/app_colors.dart';
 import 'package:mbl/app/view/styles/fonts.dart';
 import 'package:mbl/app/view/widgets/text_box.dart';
@@ -24,23 +25,23 @@ class _LoginState extends State<Login> {
 
   var canSubmit = false;
 
-  late StreamController<String> _emailStreamController;
+  late StreamController<String> _usernameStreamController;
   late StreamController<String> _pinStreamController;
 
-  final emailFocus = FocusNode();
+  final usernameFocus = FocusNode();
   final pinFocus = FocusNode();
 
-  final emailController = TextEditingController();
+  final usernameController = TextEditingController();
   final pinController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    _emailStreamController = StreamController<String>.broadcast();
+    _usernameStreamController = StreamController<String>.broadcast();
     _pinStreamController = StreamController<String>.broadcast();
 
-    emailController.addListener(() {
-      _emailStreamController.sink.add(emailController.text.trim());
+    usernameController.addListener(() {
+      _usernameStreamController.sink.add(usernameController.text.trim());
       validateInputs();
     });
 
@@ -53,28 +54,28 @@ class _LoginState extends State<Login> {
   @override
   void dispose() {
     super.dispose();
-    _emailStreamController.close();
+    _usernameStreamController.close();
     _pinStreamController.close();
-    emailFocus.dispose();
+    usernameFocus.dispose();
     pinFocus.dispose();
   }
 
   void validateInputs() {
-    final emailError = CustomFormValidation.errorEmailMessage(
-      emailController.text.trim(),
-      'Email is required',
+    final usernameError = CustomFormValidation.errorUsernameMessage(
+      usernameController.text.trim(),
+      'UserName is required',
     );
 
-    final pinError = CustomFormValidation.errorMessagePassword2(
+    final pinError = CustomFormValidation.errorUsernameMessage(
       pinController.text.trim(),
       'Password is required',
     );
 
     // Check if email and password fields are non-empty and have no validation errors
     setState(() {
-      canSubmit = emailController.text.trim().isNotEmpty &&
+      canSubmit = usernameController.text.trim().isNotEmpty &&
           pinController.text.trim().isNotEmpty &&
-          emailError.isEmpty &&
+          usernameError.isEmpty &&
           pinError.isEmpty;
     });
   }
@@ -105,13 +106,13 @@ class _LoginState extends State<Login> {
                 ),
                 Gap(8.h),
                 TextBody(
-                  'Please login to your account',
+                  'Enter details below to login to your account',
                   fontSize: 14.sp,
                   color: AppColors.textSmallColor,
                 ),
                 Gap(33.h),
                 TextBody(
-                  'Email Address',
+                  'Username',
                   fontSize: 14.sp,
                   color: AppColors.textColor,
                 ),
@@ -119,27 +120,27 @@ class _LoginState extends State<Login> {
                 Padding(
                   padding: const EdgeInsets.only(bottom: 0),
                   child: StreamBuilder<String>(
-                    stream: _emailStreamController.stream,
+                    stream: _usernameStreamController.stream,
                     builder: (context, snapshot) {
                       return InputField(
-                        fieldFocusNode: emailFocus,
-                        label: 'Email',
+                        fieldFocusNode: usernameFocus,
+                        label: 'Enter username',
                         validationColor: snapshot.data == null
                             ? AppColors.white
                             : CustomFormValidation.getColor(
                           snapshot.data,
-                          emailFocus,
-                          CustomFormValidation.errorEmailMessage(
+                          usernameFocus,
+                          CustomFormValidation.errorUsernameMessage(
                             snapshot.data,
-                            'Email is required',
+                            'Username is required',
                           ),
                         ),
-                        controller: emailController,
-                        placeholder: 'Email',
+                        controller: usernameController,
+                        placeholder: 'Enter username',
                         validationMessage:
-                        CustomFormValidation.errorEmailMessage(
+                        CustomFormValidation.errorUsernameMessage(
                           snapshot.data,
-                          'Email is required',
+                          'Username is required',
                         ),
                       );
                     },
@@ -166,12 +167,12 @@ class _LoginState extends State<Login> {
                             : CustomFormValidation.getColor(
                           snapshot.data,
                           pinFocus,
-                          CustomFormValidation.errorMessagePassword2(
+                          CustomFormValidation.errorUsernameMessage(
                             snapshot.data,
                             'Password is required',
                           ),
                         ),
-                        validationMessage: CustomFormValidation.errorMessagePassword2(
+                        validationMessage: CustomFormValidation.errorUsernameMessage(
                           snapshot.data,
                           'Password is required',
                         ),
@@ -187,7 +188,7 @@ class _LoginState extends State<Login> {
                   onTap: () async {
                     await di<AuthNotifier>().login(
                       context,
-                      username: emailController.text.trim(),
+                      username: usernameController.text.trim(),
                       password: pinController.text.trim(),
                     );
                   },
@@ -195,28 +196,9 @@ class _LoginState extends State<Login> {
                 ),
                 Gap(21.h),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    ExpandTapWidget(
-                      onTap: () {
-                        Navigator.pushNamed(context, RouteName.forgotPassword);
-                      },
-                      tapPadding: const EdgeInsets.all(50),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          TextBody(
-                            'Forgot Password? ',
-                            fontSize: 14.sp,
-                          ),
-                          TextBody(
-                            'Reset',
-                            color: AppColors.primaryColor,
-                            fontSize: 14.sp,
-                          ),
-                        ],
-                      ),
-                    ),
+
                     ExpandTapWidget(
                       tapPadding: const EdgeInsets.all(50),
                       onTap: () {

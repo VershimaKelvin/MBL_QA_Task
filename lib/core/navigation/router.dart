@@ -9,6 +9,7 @@ import 'package:mbl/feature/auth/presentation/pages/signup.dart';
 
 Route<T> onGenerateRoute<T>(RouteSettings settings) {
   switch (settings.name) {
+
     case RouteName.signup:
       return _getPageRoute(
         routeName: settings.name!,

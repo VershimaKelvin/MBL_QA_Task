@@ -46,9 +46,11 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDatasource {
   async {
     if (await networkInfo.isConnected) {
       final body = {
-        "email": username,
+        "username": username,
         "password": password,
       };
+      Logger().d(body);
+      final dio = Dio();
       try {
         final response = await apiRequester.post(
           endpoint: 'auth/login',
@@ -63,7 +65,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDatasource {
         await localDataStorage.saveUser(_user);
         return _user;
       } on DioError catch (e) {
-        if (e.response?.statusCode == 401) {
+        if (e.response?.statusCode == 404) {
           throw WrongCredentialException();
         } else {
           Logger().e(e.toString());

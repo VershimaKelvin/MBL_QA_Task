@@ -53,7 +53,7 @@ class AuthNotifier extends ChangeNotifier {
         } else if (l == TimoutFailure()) {
           MyCustomToast.displayErrorMotionToast(context, 'Login Failed, Request Timeout');
         }else if (l == WrongCredentialFailure()) {
-          MyCustomToast.displayErrorMotionToast(context, 'Login failed Wrong credentials');
+          MyCustomToast.displayErrorMotionToast(context, 'User not Found');
         }
       },
       (r) async {

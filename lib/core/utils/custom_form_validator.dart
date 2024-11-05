@@ -71,7 +71,7 @@ class CustomFormValidation {
     }
   }
 
-  static String errorAddressMessage(String? text, String message, [String? type]) {
+  static String errorUsernameMessage(String? text, String message, [String? type]) {
     // var text = text ? '' : message;
     // return text;
     if (text == null) {

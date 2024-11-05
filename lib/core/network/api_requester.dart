@@ -13,6 +13,7 @@ class ApiRequester {
 
   Future<Response> _performRequest(RequestOptions requestOptions, {String? token}) async {
     try {
+      Logger().d(requestOptions.path);
       final response = await dio.request(
         requestOptions.path,
         options: Options(
@@ -20,7 +21,7 @@ class ApiRequester {
           headers: token != null ? {'Authorization': 'Bearer $token'} : null,
         ),
         data: requestOptions.data,
-        queryParameters: requestOptions.queryParameters,
+
       );
       Logger().d(requestOptions);
       return response;
@@ -40,7 +41,6 @@ class ApiRequester {
       data: body,
       method: 'POST',
     );
-    Logger().d(requestOptions.headers);
     return _performRequest(requestOptions, token: token);
   }
 
