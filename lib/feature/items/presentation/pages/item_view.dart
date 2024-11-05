@@ -47,6 +47,7 @@ class _ItemViewState extends State<ItemView> {
               TextBody(
                   'All items will be listed below'
               ),
+              TextSmall('Items are clickable',fontSize: 10.h,fontWeight:FontWeight.bold,),
               Gap(20.h),
               myProvider.isItemsLoading
                   ? CircularProgressIndicator(color: AppColors.primaryColor,)

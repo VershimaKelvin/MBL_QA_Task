@@ -15,6 +15,7 @@ import 'package:mbl/feature/items/domain/usecase/create_item_usecase.dart';
 import 'package:mbl/feature/items/domain/usecase/delete_item_usecase.dart';
 import 'package:mbl/feature/items/domain/usecase/item_usecase.dart';
 import 'package:mbl/feature/items/domain/usecase/single_item_usecase.dart';
+import 'package:mbl/feature/items/domain/usecase/update_item_usecase.dart';
 import 'package:mbl/feature/items/presentation/pages/item_view.dart';
 
 @lazySingleton
@@ -24,12 +25,14 @@ class ItemNotifier extends ChangeNotifier {
     required this.createItemUsecase,
     required this.singleItemUsecase,
     required this.deleteItemUsecase,
+    required this.updateItemUsecase,
   });
 
   final ItemUsecase itemUsecase;
   final CreateItemUsecase createItemUsecase;
   final SingleItemUsecase singleItemUsecase;
   final DeleteItemUsecase deleteItemUsecase;
+  final UpdateItemUsecase updateItemUsecase;
 
 
   List<ItemEntity> items = [];
@@ -173,6 +176,54 @@ class ItemNotifier extends ChangeNotifier {
           await getAllItems(context);
           items.removeWhere((item) => item.id != null && item.id == id);
           MyCustomToast.displaySuccessMotionToast(context, 'Item Deleted');
+          unawaited(Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ItemView(),
+              ),
+                  (route) => false));
+        }else{
+          MyCustomToast.displayErrorMotionToast(context, 'please try again later');
+        }
+      },
+    );
+  }
+
+
+
+  Future<void> updateItem(
+      BuildContext context, {
+        required String id,
+        required String name,
+        required String description
+      })
+  async {
+    final navigator = Navigator.of(context);
+    unawaited(di<AppLoadingPopup>().show(context));
+    final response = await updateItemUsecase(
+      UpdateParams(
+        id: id,
+        name: name,
+        description: description,
+      ),
+    );
+    navigator.pop();
+    await response.fold(
+          (l) {
+        if (l == NoInternetFailure()) {
+          MyCustomToast.displayErrorMotionToast(context, 'No internet Connection');
+        }
+        else if (l == UnknownFailure()) {
+          MyCustomToast.displayErrorMotionToast(context, 'please try again later');
+        }
+        else{
+          MyCustomToast.displayErrorMotionToast(context, 'Action Failed, try again');
+        }
+      },
+          (r) async {
+        if(r){
+          await getAllItems(context);
+          MyCustomToast.displaySuccessMotionToast(context, 'Item Updated');
           unawaited(Navigator.pushAndRemoveUntil(
               context,
               MaterialPageRoute(

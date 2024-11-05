@@ -3,24 +3,29 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
-import 'package:mbl/app/app.dart';
 import 'package:mbl/app/view/styles/app_colors.dart';
 import 'package:mbl/app/view/styles/fonts.dart';
 import 'package:mbl/app/view/widgets/text_box.dart';
 import 'package:mbl/app/view/widgets/theme_button.dart';
 import 'package:mbl/core/di/di_container.dart';
 import 'package:mbl/core/utils/custom_form_validator.dart';
-import 'package:mbl/feature/auth/presentation/changeNotifier/authNotifier.dart';
+import 'package:mbl/feature/items/domain/entities/item_entity.dart';
 import 'package:mbl/feature/items/presentation/changeNotifier/item_notifier.dart';
 
-class AddItemScreen extends StatefulWidget {
-  const AddItemScreen({super.key});
+class UpdateScreen extends StatefulWidget {
+  const UpdateScreen({
+    required this.item,
+    super.key});
+
+  final ItemEntity item;
 
   @override
-  State<AddItemScreen> createState() => _AddItemScreenState();
+  State<UpdateScreen> createState() => _UpdateScreenState();
+
 }
 
-class _AddItemScreenState extends State<AddItemScreen> {
+class _UpdateScreenState extends State<UpdateScreen> {
+
   var canSubmit = false;
 
 
@@ -32,13 +37,19 @@ class _AddItemScreenState extends State<AddItemScreen> {
   final descriptionFocus = FocusNode();
 
 
-  final nameController = TextEditingController();
-  final descriptionController = TextEditingController();
+  TextEditingController nameController = TextEditingController();
+  TextEditingController descriptionController = TextEditingController();
 
 
   @override
   void initState() {
     super.initState();
+
+    nameController = TextEditingController(text: widget.item.name!);
+
+    descriptionController = TextEditingController(text: widget.item.description!);
+
+
     _nameStreamController = StreamController<String>.broadcast();
     _descriptionStreamController = StreamController<String>.broadcast();
 
@@ -96,7 +107,7 @@ class _AddItemScreenState extends State<AddItemScreen> {
       child: Scaffold(
         appBar: AppBar(backgroundColor: AppColors.white,),
         body: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 15.w,vertical: 20.h),
+          padding: EdgeInsets.symmetric(horizontal: 15.w,vertical: 20.h),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -105,11 +116,11 @@ class _AddItemScreenState extends State<AddItemScreen> {
                   crossAxisAlignment:CrossAxisAlignment.start,
                   children: [
                     TextBody(
-                        'Create an Item',
+                      'Create an Item',
                       fontWeight: FontWeight.bold,
                     ),
                     Gap(4.h),
-                    TextSmall('Fill the form below to create an item',fontSize: 13.sp,),
+                    TextSmall('You can Edit an Item',fontSize: 13.sp,),
                     Gap(30.h),
                     TextBody(
                       'Name',
@@ -181,14 +192,15 @@ class _AddItemScreenState extends State<AddItemScreen> {
                 ),
               ),
               BusyButton(
-                disabled: !canSubmit,
-                  title: 'Create Item',
+                  disabled: !canSubmit,
+                  title: 'Update Item',
                   onTap: (){
-                  di<ItemNotifier>().createItem(context,
-                      name: nameController.text.trim(),
-                      description: descriptionController.text.trim());
+                    di<ItemNotifier>().updateItem(context,
+                        name: nameController.text.trim(),
+                        description: descriptionController.text.trim(),
+                        id: widget.item.id!
+                    );
                   }
-
               )
             ],
           ),

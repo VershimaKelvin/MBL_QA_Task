@@ -7,6 +7,7 @@ import 'package:mbl/app/view/styles/fonts.dart';
 import 'package:mbl/core/di/di_container.dart';
 import 'package:mbl/feature/items/domain/entities/item_entity.dart';
 import 'package:mbl/feature/items/presentation/changeNotifier/item_notifier.dart';
+import 'package:mbl/feature/items/presentation/pages/update_screen.dart';
 
 class ItemDetailScreen extends StatefulWidget {
   const ItemDetailScreen({
@@ -85,15 +86,25 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
                 Row(
                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Container(
-                      height: 40.h,
-                      width: 100.w,
-                      decoration: BoxDecoration(
-                        color: AppColors.primaryColor,
-                        borderRadius: BorderRadius.circular(8.r),
-                      ),
-                      child: Center(
-                        child: TextBody('Update',color: AppColors.white,),
+                    InkWell(
+                      onTap: (){
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => UpdateScreen(item: widget.item),
+                          ),
+                        );
+                      },
+                      child: Container(
+                        height: 40.h,
+                        width: 100.w,
+                        decoration: BoxDecoration(
+                          color: AppColors.primaryColor,
+                          borderRadius: BorderRadius.circular(8.r),
+                        ),
+                        child: Center(
+                          child: TextBody('Update',color: AppColors.white,),
+                        ),
                       ),
                     ),
                     InkWell(

@@ -61,8 +61,7 @@ class ItemRepositoryImpl extends ItemRepository {
 
   @override
   Future<Either<Failure, bool>> createItems(
-      {required String name, required String description})
-  async {
+      {required String name, required String description}) async {
     try {
       final response = await itemRemoteDatasource.createItem(
           name: name, description: description);
@@ -106,8 +105,8 @@ class ItemRepositoryImpl extends ItemRepository {
   }
 
   @override
-  Future<Either<Failure, ItemEntity>> getSingleItem({required String id})
-  async {
+  Future<Either<Failure, ItemEntity>> getSingleItem(
+      {required String id}) async {
     try {
       final response = await itemRemoteDatasource.getSingleItem(id: id);
       return Right(response);
@@ -193,4 +192,48 @@ class ItemRepositoryImpl extends ItemRepository {
     }
   }
 
+  @override
+  Future<Either<Failure, bool>> updateItem(
+      {required String name, required String description, required String id})
+  async {
+    try {
+      final response = await itemRemoteDatasource.updateItem(id: id, name:name, description:description);
+      return Right(response);
+    } catch (e) {
+      Logger().e(e);
+      if (e is NoInternetException) {
+        return Left(NoInternetFailure());
+      }
+      if (e is WrongCredentialException) {
+        return Left(WrongCredentialFailure());
+      }
+      if (e is DioError) {
+        Logger().d(e.error);
+        if (e.type == DioErrorType.connectionTimeout ||
+            e.type == DioErrorType.receiveTimeout) {
+          return Left(
+            TimoutFailure(),
+          );
+        }
+        Logger().e(e.response?.data);
+        if (e.response?.data != null && e.response?.data != '') {
+          Logger().d(e.response!.data);
+          return const Left(
+            ServerFailure(
+              message: 'Service unavailable, please try again!',
+            ),
+          );
+        } else {
+          return const Left(
+            ServerFailure(
+              message: 'Server error, please try again',
+            ),
+          );
+        }
+      }
+      return Left(
+        UnknownFailure(),
+      );
+    }
+  }
 }

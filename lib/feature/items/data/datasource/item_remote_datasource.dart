@@ -14,7 +14,7 @@ import 'package:mbl/feature/items/data/model/item_model.dart';
 
 abstract class ItemRemoteDatasource {
   Future<List<ItemModel>> getAllItems();
-  
+
   Future<ItemModel> getSingleItem({required String id});
 
   Future<bool> deleteItem({required String id});
@@ -22,11 +22,14 @@ abstract class ItemRemoteDatasource {
   Future<bool> createItem({
     required String name,
     required String description,
-});
-  
-  
-}
+  });
 
+  Future<bool> updateItem({
+    required String name,
+    required String description,
+    required String id,
+  });
+}
 
 @LazySingleton(as: ItemRemoteDatasource)
 class ItemRemoteDataSourceImpl implements ItemRemoteDatasource {
@@ -41,8 +44,7 @@ class ItemRemoteDataSourceImpl implements ItemRemoteDatasource {
   final ApiRequester apiRequester;
 
   @override
-  Future<List<ItemModel>> getAllItems()
-  async{
+  Future<List<ItemModel>> getAllItems() async {
     if (await networkInfo.isConnected) {
       final queryParams = {
         'join': 'user',
@@ -74,24 +76,17 @@ class ItemRemoteDataSourceImpl implements ItemRemoteDatasource {
     }
   }
 
-
   @override
-  Future<bool> createItem({
-    required String name,
-    required String description
-  })
-  async {
+  Future<bool> createItem(
+      {required String name, required String description}) async {
     if (await networkInfo.isConnected) {
       final body = {
         'name': name,
         'description': description,
       };
       final token = await localDataStorage.getToken();
-      final response = await apiRequester.post(
-        endpoint: 'items',
-        body: body,
-        token: token
-      );
+      final response =
+          await apiRequester.post(endpoint: 'items', body: body, token: token);
       Logger().d(response);
       if (response.statusCode == 201) {
         return true;
@@ -103,11 +98,9 @@ class ItemRemoteDataSourceImpl implements ItemRemoteDatasource {
   }
 
   @override
-  Future<ItemModel> getSingleItem({required String id})
-  async{
+  Future<ItemModel> getSingleItem({required String id}) async {
     if (await networkInfo.isConnected) {
-      final body = {
-      };
+      final body = {};
       try {
         final token = await localDataStorage.getToken();
         Logger().d(token);
@@ -148,7 +141,8 @@ class ItemRemoteDataSourceImpl implements ItemRemoteDatasource {
       final token = await localDataStorage.getToken();
       final response = await apiRequester.delete(
         endpoint: 'items/$id',
-        token: token, body: null,
+        token: token,
+        body: null,
       );
 
       if (response.statusCode == 200) {
@@ -163,7 +157,34 @@ class ItemRemoteDataSourceImpl implements ItemRemoteDatasource {
     }
   }
 
+  @override
+  Future<bool> updateItem(
+      {required String name, required String description, required String id})
+  async {
+    if (!await networkInfo.isConnected) {
+      throw NoInternetException();
+    }
+    final body = {
+      "name":name,
+      "description":description,
+    };
+    try {
+      final token = await localDataStorage.getToken();
+      final response = await apiRequester.patch(
+        endpoint: 'items/$id',
+        token: token,
+        body: body,
+      );
 
-
-
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        // Handle other status codes or unexpected cases here if needed
+        return false;
+      }
+    } catch (e) {
+      // Log or handle the error
+      rethrow;
+    }
+  }
 }
