@@ -28,6 +28,7 @@ class AuthNotifier extends ChangeNotifier {
   final LoginUsecase loginUsecase;
   final RegisterUsecase registerUsecase;
 
+
   UserEntity? user;
 
 

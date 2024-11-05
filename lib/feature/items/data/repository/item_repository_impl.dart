@@ -1,4 +1,3 @@
-
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
@@ -17,12 +16,10 @@ class ItemRepositoryImpl extends ItemRepository {
 
   final ItemRemoteDatasource itemRemoteDatasource;
 
-
   @override
-  Future<Either<Failure, List<ItemEntity>>> getItems()
-  async {
+  Future<Either<Failure, List<ItemEntity>>> getItems() async {
     try {
-      final response = await itemRemoteDatasource.getAllItems(  );
+      final response = await itemRemoteDatasource.getAllItems();
       return Right(response);
     } catch (e) {
       Logger().e(e);
@@ -62,6 +59,48 @@ class ItemRepositoryImpl extends ItemRepository {
     }
   }
 
+  @override
+  Future<Either<Failure, bool>> createItems(
+      {required String name, required String description}) async {
+    try {
+      final response = await itemRemoteDatasource.createItem(
+          name: name, description: description);
+      return Right(response);
+    } catch (e) {
+      Logger().e(e);
+      if (e is NoInternetException) {
+        return Left(NoInternetFailure());
+      }
+      if (e is WrongCredentialException) {
+        return Left(WrongCredentialFailure());
+      }
+      if (e is DioError) {
+        Logger().d(e.error);
+        if (e.type == DioErrorType.connectionTimeout ||
+            e.type == DioErrorType.receiveTimeout) {
+          return Left(
+            TimoutFailure(),
+          );
+        }
+        Logger().e(e.response?.data);
+        if (e.response?.data != null && e.response?.data != '') {
+          Logger().d(e.response!.data);
+          return const Left(
+            ServerFailure(
+              message: 'Service unavailable, please try again!',
+            ),
+          );
+        } else {
+          return const Left(
+            ServerFailure(
+              message: 'Server error, please try again',
+            ),
+          );
+        }
+      }
+      return Left(
+        UnknownFailure(),
+      );
+    }
+  }
 }
-
-

@@ -3,6 +3,7 @@ import 'package:mbl/core/navigation/route_extentions.dart';
 import 'package:mbl/core/navigation/route_name.dart';
 import 'package:mbl/feature/auth/presentation/pages/login.dart';
 import 'package:mbl/feature/auth/presentation/pages/signup.dart';
+import 'package:mbl/feature/items/presentation/pages/add_item_screen.dart';
 import 'package:mbl/feature/items/presentation/pages/item_view.dart';
 
 
@@ -27,6 +28,12 @@ Route<T> onGenerateRoute<T>(RouteSettings settings) {
       return _getPageRoute(
         routeName: settings.name!,
         viewToShow: const ItemView(),
+      );
+
+      case RouteName.addItem:
+      return _getPageRoute(
+        routeName: settings.name!,
+        viewToShow: const AddItemScreen(),
       );
     default:
       return MaterialPageRoute<T>(

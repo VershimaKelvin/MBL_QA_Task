@@ -14,6 +14,11 @@ import 'package:mbl/feature/items/data/model/item_model.dart';
 
 abstract class ItemRemoteDatasource {
   Future<List<ItemModel>> getAllItems();
+
+  Future<bool> createItem({
+    required String name,
+    required String description,
+});
 }
 
 
@@ -58,6 +63,34 @@ class ItemRemoteDataSourceImpl implements ItemRemoteDatasource {
           throw Exception('Failed to fetch items');
         }
       }
+    } else {
+      throw NoInternetException();
+    }
+  }
+
+
+  @override
+  Future<bool> createItem({
+    required String name,
+    required String description
+  })
+  async {
+    if (await networkInfo.isConnected) {
+      final body = {
+        'name': name,
+        'description': description,
+      };
+      final token = await localDataStorage.getToken();
+      final response = await apiRequester.post(
+        endpoint: 'items',
+        body: body,
+        token: token
+      );
+      Logger().d(response);
+      if (response.statusCode == 201) {
+        return true;
+      }
+      return false;
     } else {
       throw NoInternetException();
     }
