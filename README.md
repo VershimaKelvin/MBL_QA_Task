@@ -21,13 +21,18 @@ This repository contains a UI built to interact with and test the API endpoints 
    ```bash
    flutter pub get
 
-3. **Run on Emulator or Connected Device**:
+3. **Generate necessary files**:
+   ```bash
+   flutter pub run build_runner build --delete-conflicting-outputs
+
+4. **Run on Emulator or Connected Device**:
    ```bash
    flutter run
    
-4. **Specify Device (if multiple devices are connected)**:
+5. **Specify Device (if multiple devices are connected)**:
    ```bash
    flutter run -d <device_id>
+
 
 ## Testing the API Integration
 The UI allows you to interact with the endpoints by sending requests and viewing responses directly. Follow on-screen instructions to test each API.
