@@ -4,6 +4,8 @@ This repository contains a simple app i built to interact with and test the API 
 
 ---
 
+NOTE: Please note that the first request lags, if it takes to long to give a response please restart the app and it wont lag.
+
 ## Getting Started 🚀
 
 - [Flutter SDK](https://flutter.dev/docs/get-started/install) installed
