@@ -35,10 +35,10 @@ class _ItemViewState extends State<ItemView> {
   @override
   Widget build(BuildContext context) {
     final myProvider = Provider.of<ItemNotifier>(context);
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: AppColors.white,
-        body: Padding(
+    return Scaffold(
+      backgroundColor: AppColors.white,
+      body: SafeArea(
+        child: Padding(
             padding: EdgeInsets.symmetric(
                 horizontal: 12.w,vertical: 20.h
             ),

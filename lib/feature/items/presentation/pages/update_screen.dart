@@ -103,10 +103,10 @@ class _UpdateScreenState extends State<UpdateScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(backgroundColor: AppColors.white,),
-        body: Padding(
+    return Scaffold(
+      appBar: AppBar(backgroundColor: AppColors.white,),
+      body: SafeArea(
+        child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 15.w,vertical: 20.h),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
