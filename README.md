@@ -32,6 +32,29 @@ This repository contains a UI built to interact with and test the API endpoints 
 ## Testing the API Integration
 The UI allows you to interact with the endpoints by sending requests and viewing responses directly. Follow on-screen instructions to test each API.
 
+
+## Building an APK
+You can build an apk for test on a real device by running 
+
+1. **Open your project in Terminal or Command Prompt**:
+   Navigate to your Flutter project directory.
+
+   ```bash
+   cd path/to/your/flutter/project
+
+2. **Run the build command**:
+   Use the following command to build a release APK:
+
+   ```bash
+   flutter build apk --release
+
+3.  **Locate the APK**:
+   After the build completes, find your APK in the following directory:
+
+   ```bash
+   build/app/outputs/flutter-apk/app-release.apk
+   
+
 ## Running Tests 🧪
 
 To run all unit and widget tests use the following command:
