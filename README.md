@@ -56,17 +56,18 @@ You can build an apk for test on a real device by running
 3.  **Locate the APK**:
    After the build completes, find your APK in the following directory:
 
-   ```bash
-   build/app/outputs/flutter-apk/app-release.apk
+   build/app/outputs/flutter-apk/app-release.apk*
+
 
 ## ScreenShots
 
 Here are some screenshootes taken from an android device
 
-|  Screen column1  |                         Screen column2                         |  Screen column3
-:------------:|:--------------------------------------------------------------:|:-------------------------:
-<img src="assets/images/log.jpg" width="300" height="600"/>| <img src="assets/images/signup.jpg" width="300" height="600"/> | <img src="assets/images/itemview.jpg" width="300" height="600"/>
-<img src="assets/images/itemdetail.jpg" width="300" height="600"/>|        <img src="assets/images/succ.jpg" width="300" height="600"/>        | <img src="assets/images/las.jpg" width="300" height="600"/>
+| Screen column1                                | Screen column2                                | Screen column3                                |
+|:---------------------------------------------:|:---------------------------------------------:|:---------------------------------------------:|
+<img src="assets/images/log.jpg" width="300" height="600"/> | <img src="assets/images/signup.jpg" width="300" height="600"/> | <img src="assets/images/itemview.jpg" width="300" height="600"/> 
+<img src="assets/images/itemdetail.jpg" width="300" height="600"/> | <img src="assets/images/succ.jpg" width="300" height="600"/> | <img src="assets/images/las.jpg" width="300" height="600"/>
+
 
 ## Running Tests 🧪
 
@@ -75,3 +76,5 @@ To run all unit and widget tests use the following command:
 ```sh
 $ flutter test --coverage --test-randomize-ordering-seed random
 ```
+
+
