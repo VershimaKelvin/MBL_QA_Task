@@ -63,10 +63,10 @@ You can build an apk for test on a real device by running
 
 Here are some screenshootes taken from an android device
 
-|  Screen column1  |                  Screen column2                   |  Screen column3
-:------------:|:-------------------------------------------------:|:-------------------------:
-<img src="assets/images/log.jpg" width="300"/>| <img src="assets/images/signup.jpg" width="300"/> | <img src="assets/images/itemview.jpg" width="300"/>
-<img src="assets/images/itemdetail.jpg" width="300"/>|  <img src="assets/images/succ.jpg" width="300"/>  | <img src="assets/images/las.jpg" width="300"/>
+|  Screen column1  |                         Screen column2                         |  Screen column3
+:------------:|:--------------------------------------------------------------:|:-------------------------:
+<img src="assets/images/log.jpg" width="300" height="600"/>| <img src="assets/images/signup.jpg" width="300" height="600"/> | <img src="assets/images/itemview.jpg" width="300" height="600"/>
+<img src="assets/images/itemdetail.jpg" width="300" height="600"/>|        <img src="assets/images/succ.jpg" width="300" height="600"/>        | <img src="assets/images/las.jpg" width="300" height="600"/>
 
 ## Running Tests 🧪
 
