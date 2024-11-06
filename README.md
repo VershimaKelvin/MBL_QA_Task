@@ -1,6 +1,6 @@
 # MBL QA Task
 
-This repository contains a UI built to interact with and test the API endpoints specified in the Postman documentation provided by MBL Limited. The application consumes endpoints for various tasks, ensuring accurate API responses and demonstrating functionality based on the assignment requirements. Built using Flutter (dart), this project provides a user-friendly interface to perform actions aligned with the QA process.
+This repository contains a simple app i built to interact with and test the API endpoints specified in the Postman documentation provided by MBL Limited. The application consumes endpoints for various tasks, ensuring accurate API responses and demonstrating functionality based on the assignment requirements. Built using Flutter (dart), this project provides a user-friendly interface to perform actions aligned with the QA process.
 
 ---
 
