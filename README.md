@@ -66,7 +66,7 @@ Here are some screenshootes taken from an android device
 |  Screen column1  |                  Screen column2                   |  Screen column3
 :------------:|:-------------------------------------------------:|:-------------------------:
 <img src="assets/images/log.jpg" width="300"/>| <img src="assets/images/signup.jpg" width="300"/> | <img src="assets/images/itemview.jpg" width="300"/>
-<img src="assets/images/itemdetail.jpg" width="300"/>|  <img src="assets/images/succ.jpg" width="300"/>
+<img src="assets/images/itemdetail.jpg" width="300"/>|  <img src="assets/images/succ.jpg" width="300"/>  | <img src="assets/images/las.jpg" width="300"/>
 
 ## Running Tests 🧪
 
