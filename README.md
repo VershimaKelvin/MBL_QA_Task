@@ -1,6 +1,6 @@
 # MBL QA Task
 
-This repository contains a UI built to interact with and test the API endpoints specified in the Postman documentation provided by MBL Limited. The application consumes endpoints for various tasks, ensuring accurate API responses and demonstrating functionality based on the assignment requirements. Built using Flutter (dart), this project provides a user-friendly interface to perform actions aligned with the QA process.
+This repository contains a simple app i built to interact with and test the API endpoints specified in the Postman documentation provided by MBL Limited. The application consumes endpoints for various tasks, ensuring accurate API responses and demonstrating functionality based on the assignment requirements. Built using Flutter (dart), this project provides a user-friendly interface to perform actions aligned with the QA process.
 
 ---
 
@@ -58,7 +58,15 @@ You can build an apk for test on a real device by running
 
    ```bash
    build/app/outputs/flutter-apk/app-release.apk
-   
+
+## ScreenShots
+
+Here are some screenshootes taken from an android device
+
+|  Screen column1  |                         Screen column2                         |  Screen column3
+:------------:|:--------------------------------------------------------------:|:-------------------------:
+<img src="assets/images/log.jpg" width="300" height="600"/>| <img src="assets/images/signup.jpg" width="300" height="600"/> | <img src="assets/images/itemview.jpg" width="300" height="600"/>
+<img src="assets/images/itemdetail.jpg" width="300" height="600"/>|        <img src="assets/images/succ.jpg" width="300" height="600"/>        | <img src="assets/images/las.jpg" width="300" height="600"/>
 
 ## Running Tests 🧪
 
