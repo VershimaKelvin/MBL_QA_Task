@@ -260,13 +260,17 @@ class _SignupState extends State<Signup> {
                         BusyButton(
                           title: 'Register',
                           onTap: () {
-                            di<AuthNotifier>().register(
+                            if(canSubmit){
+                              di<AuthNotifier>().register(
                                 context,
                                 password: repeatPasswordController.text.trim(),
                                 username: usernameController.text.trim(),
-                            );
+                              );
+                            }else{
+
+                            }
+
                           },
-                          disabled: !canSubmit,
                         ),
                         Gap(50.h),
                         Padding(

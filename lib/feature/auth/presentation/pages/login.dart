@@ -12,6 +12,7 @@ import 'package:mbl/app/view/widgets/theme_button.dart';
 import 'package:mbl/core/di/di_container.dart';
 import 'package:mbl/core/navigation/route_name.dart';
 import 'package:mbl/core/utils/custom_form_validator.dart';
+import 'package:mbl/core/utils/custom_toast.dart';
 import 'package:mbl/feature/auth/presentation/changeNotifier/authNotifier.dart';
 
 class Login extends StatefulWidget {
@@ -187,13 +188,16 @@ class _LoginState extends State<Login> {
                   BusyButton(
                     title: 'Login',
                     onTap: () async {
-                      await di<AuthNotifier>().login(
-                        context,
-                        username: usernameController.text.trim(),
-                        password: pinController.text.trim(),
-                      );
+                      if(canSubmit){
+                        await di<AuthNotifier>().login(
+                          context,
+                          username: usernameController.text.trim(),
+                          password: pinController.text.trim(),
+                        );
+                      }else{
+                        MyCustomToast.displayErrorMotionToast(context, 'All fields are required');
+                      }
                     },
-                    disabled: !canSubmit,
                   ),
                   Gap(21.h),
                   Row(
